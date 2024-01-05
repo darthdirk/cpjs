@@ -12,37 +12,43 @@ typedef struct node {
     struct node *next;
 } node;
 
-node* head = NULL;
+typedef node * stack;
 
 
-bool push(int value) {
+
+bool push(stack *mystack, int value) {
     
     node *newnode = malloc(sizeof(node));
     if (newnode == NULL) return false;
 
     newnode->value = value;
-    newnode->next = head;
-    head = newnode;
+    newnode->next = *mystack;
+    *mystack = newnode;
     return true;
 }
 
-int pop() {
-    if (head == NULL) return STACK_EMPTY;
+int pop(stack *mystack) {
+    if (*mystack == NULL) return STACK_EMPTY;
 
-    int result = head->value;
-    node *tmp = head;
-    head = head->next;
-    free(tmp);
+    int result = (*mystack)->value;
+    node *tmp = *mystack;
+    *mystack = (*mystack)->next;
+    free(tmp); 
     return result;
 }
 
 int main() {
-    push(56);
-    push(78);
-    push(13);
+    stack s1 = NULL, s2 = NULL, s3 = NULL;
+    push(&s1, 56);
+    push(&s2, 78);
+    push(&s2, 6);
+    push(&s2, 8);
+    push(&s2, 79);
+    push(&s2, 68);
+    push(&s3, 13);
 
     int t;
-    while ((t = pop()) != STACK_EMPTY) {
+    while ((t = pop(&s2)) != STACK_EMPTY) {
     printf("t = %d\n",t);
     }
 }

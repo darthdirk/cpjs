@@ -6,32 +6,45 @@
 #define EMPTY (-1)
 #define STACK_EMPTY INT_MIN
 
-int mystack[STACK_LENGTH];
-int top = EMPTY;
 
-bool push(int value) {
-    if (top >= STACK_LENGTH-1) return false;
+typedef struct {
+    int values[STACK_LENGTH];
+    int top;
+} stack;
 
-    top++;
-    mystack[top] = value;
+
+bool push(stack *mystack, int value) {
+    if (mystack->top >= STACK_LENGTH-1) return false;
+
+    mystack->top++;
+    mystack->values[mystack->top] = value;
     return true;
 }
 
-int pop() {
-    if (top == EMPTY) return STACK_EMPTY;
+int pop(stack *mystack) {
+    if (mystack->top == EMPTY) return STACK_EMPTY;
 
-    int result = mystack[top];
-    top--;
+    int result = mystack->values[mystack->top];
+    mystack->top--;
     return result;
 }
 
 int main() {
-    push(56);
-    push(78);
-    push(13);
+    stack s1;
+    s1.top = EMPTY;
+    stack s2;
+    s2.top = EMPTY;
+    stack s3;
+    s3.top = EMPTY;
+
+    push(&s1, 56);
+    push(&s2, 78);
+    push(&s2, 178);
+    push(&s2, 8);
+    push(&s3, 13);
 
     int t;
-    while ((t = pop()) != STACK_EMPTY) {
+    while ((t = pop(&s2)) != STACK_EMPTY) {
     printf("t = %d\n",t);
     }
 }
